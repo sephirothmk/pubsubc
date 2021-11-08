@@ -77,6 +77,10 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 		subConfig := pubsub.SubscriptionConfig{
                 Topic: topic,
                 AckDeadline: 20 * time.Second,
+                DeadLetterPolicy: &pubsub.DeadLetterPolicy{
+                        DeadLetterTopic: "projects/igt-health-operations/topics/inbound-dlq-topic",
+                        MaxDeliveryAttempts: 5,
+                },
         }
 
 		for _, subscriptionID := range subscriptions {
