@@ -60,11 +60,10 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 			return fmt.Errorf("Unable to create DLQ topic")
 		}
 	debugf("Creating subscription for DLQ")
-		dlqSub, dlqSubErr := client.CreateSubscription(ctx, "inbound-dlq-subscription", pubsub.SubscriptionConfig{Topic: dlqTopic})
+		_, dlqSubErr := client.CreateSubscription(ctx, "inbound-dlq-subscription", pubsub.SubscriptionConfig{Topic: dlqTopic})
 		if dlqSubErr != nil {
 			return fmt.Errorf("Unable to create DLQ subscription")
 		}
-	debugf("Subscription for DLQ created %q", dlqSub)
 
 	for topicID, subscriptions := range topics {
 		debugf("  Creating topic %q", topicID)
