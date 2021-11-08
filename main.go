@@ -73,16 +73,8 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 		}
 
 		for _, subscriptionID := range subscriptions {
-			subConfig := pubsub.SubscriptionConfig{
-                Topic: topic,
-                AckDeadline: 20 * time.Second,
-                DeadLetterPolicy: &pubsub.DeadLetterPolicy{
-                        DeadLetterTopic: "projects/igt-health-operations/topics/inbound-dlq-subscription",
-                        MaxDeliveryAttempts: 5,
-                },
-			}
 			debugf("    Creating subscription %q", subscriptionID)
-			_, err = client.CreateSubscription(ctx, subscriptionID, subConfig)
+			_, err = client.CreateSubscription(ctx, subscriptionID, pubsub.SubscriptionConfig{Topic: topic})
 			if err != nil {
 				return fmt.Errorf("Unable to create subscription %q on topic %q for project %q: %s", subscriptionID, topicID, projectID, err)
 			}
