@@ -54,12 +54,12 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 
 	debugf("Client connected with project ID %q", projectID)
 	debugf("Creating DLQ topic")
-		dlqTopic, dlqTopicErr := client.CreateTopic(ctx, "inbound-dlq-topic")
+		dlqTopicErr := client.CreateTopic(ctx, "inbound-dlq-topic")
 		if dlqTopicErr != nil {
 			return fmt.Errorf("Unable to create DLQ topic")
 		}
 	debugf("Creating subscription for DLQ")
-		dlqSub, dlqSubErr := client.CreateSubscription(ctx, "inbound-dlq-subscription", pubsub.SubscriptionConfig{Topic: client.Topic("inbound-dlq-topic")})
+		dlqSubErr := client.CreateSubscription(ctx, "inbound-dlq-subscription", pubsub.SubscriptionConfig{Topic: client.Topic("inbound-dlq-topic")})
 		if dlqSubErr != nil {
 			return fmt.Errorf("Unable to create DLQ subscription")
 		}
