@@ -72,6 +72,8 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 			return fmt.Errorf("Unable to create topic %q for project %q: %s", topicID, projectID, err)
 		}
 
+		fmt.Printf("Starting logic for subs")
+
 		subConfig := pubsub.SubscriptionConfig{
                 Topic: topic,
                 AckDeadline: 20 * time.Second,
@@ -85,7 +87,6 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 			debugf("    Creating subscription %q", subscriptionID)
 			_, err = client.CreateSubscription(ctx, subscriptionID, subConfig)
 			if err != nil {
-				fmt.Printf("Unable to create subscription %q on topic %q for project %q: %s", subscriptionID, topicID, projectID, err)
 				return fmt.Errorf("Unable to create subscription %q on topic %q for project %q: %s", subscriptionID, topicID, projectID, err)
 			}
 		}
