@@ -53,6 +53,16 @@ func create(ctx context.Context, projectID string, topics Topics) error {
 	defer client.Close()
 
 	debugf("Client connected with project ID %q", projectID)
+	debugf("Creating DLQ topic")
+		topic, err := client.CreateTopic(ctx, "inbound-dlq-topic")
+		if err != nil {
+			return fmt.Errorf("Unable to create DLQ topic")
+		}
+	debugf("Creating subscription for DLQ")
+		dlqSub, err = client.CreateSubscription(ctx, "inbound-dlq-subscription", pubsub.SubscriptionConfig{Topic: client.Topic("inbound-dlq-topic")})
+		if err != nil {
+			return fmt.Errorf("Unable to create subscription %q on topic %q for project %q: %s", subscriptionID, topicID, projectID, err)
+		}
 
 	for topicID, subscriptions := range topics {
 		debugf("  Creating topic %q", topicID)
