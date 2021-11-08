@@ -44,7 +44,7 @@ func fatalf(format string, params ...interface{}) {
 }
 
 // create a connection to the PubSub service and create topics and subscriptions
-// for the specified project ID.
+// for the specified projectID.
 func create(ctx context.Context, projectID string, topics Topics) error {
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
