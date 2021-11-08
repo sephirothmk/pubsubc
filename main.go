@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 	"runtime"
 	"strings"
 
@@ -77,7 +78,7 @@ func create(ctx context.Context, projectID string, topics Topics) error {
                 Topic: topic,
                 AckDeadline: 20 * time.Second,
                 DeadLetterPolicy: &pubsub.DeadLetterPolicy{
-                        DeadLetterTopic: dlqTopic,
+                        DeadLetterTopic: "projects/igt-health-operations/topics/inbound-dlq-subscription",
                         MaxDeliveryAttempts: 5,
                 },
 			}
